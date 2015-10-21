@@ -1,8 +1,11 @@
 package edu.upc.eetac.dsa.beeter.dao;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Created by Guillermo on 21/10/2015.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public interface UserDAOQuery {
     public final static String UUID = "select REPLACE(UUID(),'-','')";
     public final static String CREATE_USER = "insert into users (id, loginid, password, email, fullname) values (UNHEX(?), ?, UNHEX(MD5(?)), ?, ?);";
