@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.upc.eetac.dsa.beeter.entity.Sting;
 import edu.upc.eetac.dsa.beeter.entity.StingCollection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by Guillermo on 21/10/2015.
@@ -81,14 +78,19 @@ public class StingDAOImpl implements StingDAO {
     }
 
     @Override
-    public StingCollection getStings() throws SQLException {
+    public StingCollection getStings(long timestamp, boolean before) throws SQLException {
         StingCollection stingCollection = new StingCollection();
 
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = Database.getConnection();
-            stmt = connection.prepareStatement(StingDAOQuery.GET_STINGS);
+
+            if(before)
+                stmt = connection.prepareStatement(StingDAOQuery.GET_STINGS);
+            else
+                stmt = connection.prepareStatement(StingDAOQuery.GET_STINGS_AFTER);
+            stmt.setTimestamp(1, new Timestamp(timestamp));
 
             ResultSet rs = stmt.executeQuery();
             boolean first = true;
@@ -114,6 +116,7 @@ public class StingDAOImpl implements StingDAO {
         }
         return stingCollection;
     }
+
 
     @Override
     public Sting updateSting(String id, String subject, String content) throws SQLException {
@@ -161,4 +164,8 @@ public class StingDAOImpl implements StingDAO {
             if (connection != null) connection.close();
         }
     }
+
+
+
+
 }
