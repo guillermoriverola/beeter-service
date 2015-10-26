@@ -3,6 +3,7 @@ package edu.upc.eetac.dsa.beeter.auth;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.upc.eetac.dsa.beeter.entity.Role;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
